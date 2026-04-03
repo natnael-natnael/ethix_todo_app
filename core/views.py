@@ -19,3 +19,8 @@ def update_todo(request):
 
 def delelte_todo(request):
     return HttpResponse("Delete a todo")
+
+
+
+
+
