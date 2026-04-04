@@ -18,4 +18,4 @@ def update_todo(request):
 
 
 def delete_todo(request):
-    return HttpResponse("updated delete a todo")
+    return HttpResponse("updated delete a ")
