@@ -10,7 +10,7 @@ class User(models.Model):
     bio = models.CharField(max_length=225)
 
     def __str__(self):
-        return self.username + " " + self.email
+        return self.username
 
 
 class Todo(models.Model):
