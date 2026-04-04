@@ -8,7 +8,6 @@ class User(models.Model):
     email = models.EmailField(null=False, blank=False)
     password = models.CharField(max_length=12, null=False, blank=False)
     bio = models.CharField(max_length=225)
-
     def __str__(self):
         return self.username + " " + self.email
 
@@ -18,7 +17,6 @@ class Todo(models.Model):
     description = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now=True)
     is_completed = models.BooleanField(default=False)
-
     class PRIORITY(models.TextChoices):
         HIGH = "H", "High"
         MEDIUM = "M", "Medium"
