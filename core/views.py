@@ -8,7 +8,10 @@ import json
  #       return redirect('login')
  #   user = User.objects.get(id=user)
 
-
+def get_todos(request):
+    todos = Todo.objects.all().order_by("-created_at")
+    return render(request,"todo_list.html" )
+        
 
 def create_todo(request):
     if request.method == 'POST':
@@ -20,13 +23,11 @@ def create_todo(request):
             created_at = data.get('created_at'),
             PRIORITY = data.get('PRIORITY', 'M')
         )
-        return redirect('todo_list.html')
-
-
-def get_todos(request):
-    todos = Todo.objects.all().order_by("-created_at")
-    return render(request,"todo_list.html" )
         
+    return render(request,"create_list.html")
 
-def get_todo_by_id(request):
-    return redirect("todo_list.html")
+
+
+
+def get_todo_by_id(request,todo_id):
+    return redirect("get_todos")

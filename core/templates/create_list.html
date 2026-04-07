@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Create Todo</title>
+</head>
+
+<body class="bg-gradient-to-br from-indigo-100 to-sky-200 min-h-screen flex items-center justify-center">
+
+  <div class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-lg">
+
+    <!-- Title -->
+    <h1 class="text-3xl font-bold text-center text-sky-500 mb-6">
+      Create Todo
+    </h1>
+
+    <!-- Form -->
+    <form id="todoForm" class="space-y-5">
+
+      <!-- Title -->
+      <div>
+        <label class="block text-gray-600 mb-1">Title</label>
+        <input 
+          type="text" 
+          id="title"
+          placeholder="Enter title..."
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-sky-400 outline-none"
+        />
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label class="block text-gray-600 mb-1">Description</label>
+        <textarea 
+          id="description"
+          rows="3"
+          placeholder="Enter description..."
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-sky-400 outline-none"
+        ></textarea>
+      </div>
+
+      <!-- Priority -->
+      <div>
+        <label class="block text-gray-600 mb-1">Priority</label>
+        <select 
+          id="priority"
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-sky-400 outline-none"
+        >
+          <option value="L">Low</option>
+          <option value="M" selected>Medium</option>
+          <option value="H">High</option>
+        </select>
+      </div>
+
+      <!-- Button -->
+      <button 
+        type="submit"
+        class="w-full bg-sky-500 text-white py-2 rounded-lg hover:bg-sky-600 transition shadow-md"
+      >
+        Create Todo
+      </button>
+
+    </form>
+
+  </div>
+
+  <!-- JS to send JSON -->
+  <script>
+    const form = document.getElementById('todoForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        PRIORITY: document.getElementById('priority').value,
+        created_at: new Date().toISOString()
+      };
+
+      await fetch("", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+      });
+
+      window.location.href = "/todos/";
+    });
+
+    // CSRF helper
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.startsWith(name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  </script>
+
+</body>
+</html>
