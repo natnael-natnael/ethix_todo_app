@@ -15,7 +15,7 @@ class User(models.Model):
 
 class Todo(models.Model):
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=200, null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True)
     is_completed = models.BooleanField(default=False)
 
