@@ -13,6 +13,7 @@ def get_todos(request):
     for todo in todos:
         newtodos.append(
             {
+                "id": todo.id,
                 "title": todo.title,
                 "description": todo.description,
                 "user": todo.user.username,
@@ -22,8 +23,9 @@ def get_todos(request):
     return render(request, "index.html", {"todo_lists": newtodos})
 
 
-def get_todo_by_id(request, todo_id):
-    return HttpResponse(f"Get a todo by id and the todo  id is :{todo_id}")
+def get_todo_by_id(request, id):
+    todo = Todo.objects.get(pk=id)
+    return HttpResponse(f" todo title:{todo.title} description : {todo.description}")
 
 
 def update_todo(request):
