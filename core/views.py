@@ -23,9 +23,11 @@ def get_todos(request):
     return render(request, "index.html", {"todo_lists": newtodos})
 
 
-def get_todo_by_id(request, id):
-    todo = Todo.objects.get(pk=id)
-    return HttpResponse(f" todo title:{todo.title} description : {todo.description}")
+def get_todo_by_id(request, todo_id):
+    find_todo = Todo.objects.get(pk=todo_id)
+    if not find_todo:
+        return HttpResponse("Todo not found", status=404)
+    return render(request, "detail.html", {"todo": find_todo})
 
 
 def update_todo(request):

@@ -4,7 +4,7 @@ from . import views
 app_name = "core"
 
 urlpatterns = [
-    path("", views.get_todos, name="get_todos"),
-    path("<int:id>", views.get_todo_by_id, name="get_todo_by_id"),
-    path("create", views.create_todo, name="create_todo"),
+    path("todos/", views.get_todos, name="get_todos"),
+    path("todos/<int:todo_id>/", views.get_todo_by_id, name="get_todo_by_id"),
+    path("todos/create/", views.create_todo, name="create_todo"),
 ]
