@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Todo</title>
+    <style>
+      body { font-family: Arial, sans-serif; background: #f8fafc; margin: 0; padding: 24px; }
+      .page { max-width: 560px; margin: 0 auto; }
+      .hd { font-size: 2.5rem; text-align: center; color: #0f4bff; margin-bottom: 24px; }
+      .form { display: flex; flex-direction: column; gap: 18px; }
+      .fld { display: flex; flex-direction: column; gap: 8px; }
+      .label { font-size: 0.95rem; color: #334155; }
+      .input, .textarea, .select { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 1rem; }
+      .checkbox { margin-right: 8px; }
+      .row { display: flex; align-items: center; gap: 10px; }
+      .btn { padding: 12px 18px; border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; }
+      .btn-save { background: #f97316; }
+      .link { color: #2563eb; text-decoration: none; margin-left: 12px; font-weight: 600; }
+    </style>
+  </head>
+  <body class="page">
+    <h1 class="hd">Update Todo</h1>
+    <form method="post" class="form">
+      {% csrf_token %}
+      <div class="fld">
+        <label for="title" class="label">Title</label>
+        <input type="text" name="title" id="title" value="{{ todo.title }}" class="input" required>
+      </div>
+      <div class="fld">
+        <label for="description" class="label">Description</label>
+        <textarea name="description" id="description" rows="3" class="textarea">{{ todo.description }}</textarea>
+      </div>
+      <div class="fld">
+        <label for="priority" class="label">Priority</label>
+        <select name="priority" id="priority" class="select">
+          <option value="L" {% if todo.priority == 'L' %}selected{% endif %}>Low</option>
+          <option value="M" {% if todo.priority == 'M' %}selected{% endif %}>Medium</option>
+          <option value="H" {% if todo.priority == 'H' %}selected{% endif %}>High</option>
+        </select>
+      </div>
+      <div class="row">
+        <input type="checkbox" name="is_completed" id="is_completed" {% if todo.is_completed %}checked{% endif %} class="checkbox">
+        <label for="is_completed">Completed</label>
+      </div>
+      <div class="row">
+        <button type="submit" class="btn btn-save">Update Todo</button>
+        <a href="{% url 'core:get_todo_by_id' todo.id %}" class="link">Cancel</a>
+      </div>
+    </form>
+  </body>
+</html>
