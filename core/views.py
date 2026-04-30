@@ -1,10 +1,28 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Todo, User
 
 
 def create_todo(request):
-    return HttpResponse("Create a new todo")
+    if request.method != 'POST':
+        return redirect('core:index')
+
+    title = request.POST.get('title', '').strip()
+    if not title:
+        return redirect('core:index')
+
+    description = request.POST.get('description', '').strip()
+    user, _ = User.objects.get_or_create(
+        username='default',
+        defaults={
+            'email': 'default@example.com',
+            'password': 'password',
+            'bio': 'Default user',
+        },
+    )
+
+    Todo.objects.create(title=title, description=description, user=user)
+    return redirect('core:index')
 
 
 def get_todos(request):
@@ -30,9 +48,25 @@ def get_todo_by_id(request, todo_id):
     return render(request, "detail.html", {"todo": find_todo})
 
 
-def update_todo(request):
-    return HttpResponse("Update a todo")
+def update_todo(request, todo_id):
+    todo = get_object_or_404(Todo, pk=todo_id)
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        priority = request.POST.get('priority')
+        is_completed = request.POST.get('is_completed') == 'on'
+        todo.title = title
+        todo.description = description
+        todo.priority = priority
+        todo.is_completed = is_completed
+        todo.save()
+        return redirect('core:get_todo_by_id', todo_id=todo_id)
+    return render(request, 'update.html', {'todo': todo})
 
 
-def delelte_todo(request):
-    return HttpResponse("Delete a todo")
+def delete_todo(request, todo_id):
+    todo = get_object_or_404(Todo, pk=todo_id)
+    if request.method == 'POST':
+        todo.delete()
+        return redirect('core:index')
+    return render(request, 'delete.html', {'todo': todo})
